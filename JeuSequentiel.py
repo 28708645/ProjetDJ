@@ -61,6 +61,7 @@ class JeuSequentiel:
         une configuration finale
         """
         raise NotImplementedError
-    
+    def getGagnant(self,C):
+        raise NotImplementedError
     def getCurrentConfig(self):
         return self.Config

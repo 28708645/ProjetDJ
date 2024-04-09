@@ -80,7 +80,10 @@ class Morpion(JeuSequentiel):
         une configuration finale
         """
         plateau=C["Plateau"]
-        ended=(self.ligneComplete(plateau) or self.colonneComplete(plateau) or self.diagonaleComplete(plateau))
+        ligneBool , _ = self.ligneComplete(plateau)
+        colonneBool , _ = self.colonneComplete(plateau)
+        diagBool , _ = self.diagonaleComplete(plateau)
+        ended=( ligneBool or colonneBool or diagBool)
         #print("ENDED ===",ended)
         if(ended):
             return True
@@ -91,26 +94,71 @@ class Morpion(JeuSequentiel):
             else:
                 C["Courant"]= self.changeJoueur(C)
                 return False
-
+            
+    def getGagnant(self,C):
+        plateau=C["Plateau"]
+        ligneBool , winner = self.ligneComplete(plateau)
+        colonneBool , winner = self.colonneComplete(plateau)
+        diagBool , winner = self.diagonaleComplete(plateau)
+        ended=(ligneBool or colonneBool or diagBool)
+        if(ended):
+            return winner
+        else:
+            if(C["NbCoup"]==9):
+                self.egalite=True
+                return 0
     
     def ligneComplete(self,plateau):
         for ligne in plateau:
-            if((ligne==[1,1,1]) or (ligne==[2,2,2])):
-                return True
-        return False
+            if((ligne==[1,1,1])):
+                return (True,1)
+            if((ligne==[2,2,2])):
+                return (True,2)
+        return (False,0)
     
     def colonneComplete(self,plateau):
         for i in range (0, len(plateau)):
             colonne= np.array(plateau)[:,i]
-            if ((all (colonne==[1,1,1])) or (all(colonne==[2,2,2]))):
-                return True
-        return False
+            if ((all (colonne==[1,1,1]))):
+                return (True,1)
+            if((all(colonne==[2,2,2]))):
+                return (True,1)
+        return (False,0)
     
     def diagonaleComplete(self,plateau):
         diag1=[plateau[2][0],plateau[1][1],plateau[0][2]]
         diag2=[plateau[0][0],plateau[1][1],plateau[2][2]]
-        if((diag1==[1,1,1]) or (diag1==[2,2,2])):
-                return True
-        if((diag2==[1,1,1]) or (diag2==[2,2,2])):
-                return True
-        return False
+        if((diag1==[1,1,1]) or (diag2==[1,1,1])):
+                return (True,1)
+        if((diag1==[2,2,2])or (diag2==[2,2,2])):
+                return (True,1)
+        return (False,0)
+    
+    def opportunite(plateau,i,j,tour):
+        ligne= plateau[i]
+        opEnligne=1
+        if(tour==1):
+            ennemi=2
+        else:
+            ennemi=1
+
+        for case in ligne :
+            if (case==ennemi):
+                opEnligne=0
+        diags=[(2,0),(1,1),(0,2),(0,0),(2,2)]
+        opEnDiag=0
+        if((i,j) in diags):
+            opEnDiag=2
+            diag1=[plateau[2][0],plateau[1][1],plateau[0][2]]
+            diag2=[plateau[0][0],plateau[1][1],plateau[2][2]]
+            if(ennemi in diag1):
+                opEnDiag-=1
+            if(ennemi in diag2):
+                opEnDiag-=1
+        
+        colonne= list(np.array(plateau)[:,j])
+        opEnColonne=1
+        for case in colonne:
+            if(case==ennemi):
+                opEnColonne-=1
+        return opEnligne+opEnDiag+opEnColonne
