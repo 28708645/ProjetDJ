@@ -1,7 +1,7 @@
 from Morpion import Morpion
 from StrategieAleatoire import StrategieAleatoire
 from StrategieHumaine import StrategieHumaine
-
+from StrategieMiniMax import StrategieMiniMax
 
 def unepartie(nomJeu, Affichage=False):
     if(nomJeu=="Morpion"):
@@ -9,15 +9,18 @@ def unepartie(nomJeu, Affichage=False):
     else:
         Jeu = Morpion()
     
-    joueur1=strat1(Jeu)
-    joueur2=strat2(Jeu)
+    if strat1 == StrategieMiniMax:
+        joueur1=strat1(Jeu, profondeur)
+    else:
+        joueur1=strat1(Jeu)
+    if strat2 == StrategieMiniMax:
+        joueur2=strat2(Jeu, profondeur)
+    else:
+        joueur2=strat2(Jeu)
     conf= Jeu.Config
     while(not Jeu.estFini(conf)):
         Ccopy=conf.copy()
         jCourant=Ccopy["Courant"]
-        if(Affichage):
-            print("TOUR DU JOUEUR "+str(jCourant))
-            Jeu.afficheJeu()
         if(jCourant==1):
             nextCoup=joueur1.choisirProchainCoup(Ccopy)
         else:
@@ -26,6 +29,9 @@ def unepartie(nomJeu, Affichage=False):
         conf=Ccopy
         Jeu.Config=conf
         conf=Jeu.Config
+        if(Affichage):
+            print("TOUR DU JOUEUR "+str(jCourant))
+            Jeu.afficheJeu()
     
     if(Affichage):
         Jeu.afficheJeu()
@@ -53,9 +59,11 @@ def nparties (nomJeu,nbparties,AfficheMin=False,AfficheMax=False):
 
 game="Morpion"   
 nbpart=20    
-strat1=StrategieHumaine
-strat2=StrategieAleatoire
+strat1=StrategieMiniMax
+# Marche pour profondeur 1, ne marche plus pour > 1
+profondeur=2
+strat2=StrategieHumaine
 
 unepartie(game,True)
-
+#nparties(game, 100, True)
         

@@ -46,18 +46,78 @@ class Morpion(JeuSequentiel):
         return
 
     def f1(self, C):
-       """
-       Rend la valeur de l’evaluation de la
-       configuration C pour le joueur 1
-       """
-       self.joueur1.eval(C)
+        """
+        Rend la valeur de l'evaluation de la
+        configuration C pour le joueur 1
+        """
+        plateau = C["Plateau"]
+        return self.eval_ligne(plateau) + self.eval_colonne(plateau) + self.eval_diagonale(plateau)
+
+    def eval_ligne(self, plateau):
+        eval = 0
+        for ligne in plateau:
+            if (ligne == [1, 0, 0]) or (ligne == [0, 1, 0]) or (ligne == [0, 0, 1]):
+                eval += 1
+            elif (ligne == [1, 1, 0]) or (ligne == [0, 1, 1]) or (ligne == [1, 0, 1]):
+                eval += 3
+            elif (ligne == [2, 0, 0]) or (ligne == [0, 2, 0]) or (ligne == [0, 0, 2]):
+                eval -= 2
+            elif (ligne == [2, 2, 0]) or (ligne == [0, 2, 2]) or (ligne == [2, 0, 2]):
+                eval -= 6
+            else:
+                eval += 0
+        return eval
+    
+    def eval_colonne(self, plateau):
+        eval = 0
+        for i in range(3):
+            colonne = [plateau[0][i], plateau[1][i], plateau[2][i]]
+            if (colonne == [1, 0, 0]) or (colonne == [0, 1, 0]) or (colonne == [0, 0, 1]):
+                eval += 1
+            elif (colonne == [1, 1, 0]) or (colonne == [0, 1, 1]) or (colonne == [1, 0, 1]):
+                eval += 3
+            elif (colonne == [2, 0, 0]) or (colonne == [0, 2, 0]) or (colonne == [0, 0, 2]):
+                eval -= 2
+            elif (colonne == [2, 2, 0]) or (colonne == [0, 2, 2]) or (colonne == [2, 0, 2]):
+                eval -= 6
+            else:
+                eval += 0
+        return eval
+    
+    def eval_diagonale(self, plateau):
+        eval = 0
+        diag1=[plateau[2][0],plateau[1][1],plateau[0][2]]
+        diag2=[plateau[0][0],plateau[1][1],plateau[2][2]]
+        if (diag1 == [1, 0, 0]) or (diag1 == [0, 1, 0]) or (diag1 == [0, 0, 1]):
+            eval += 1
+        elif (diag1 == [1, 1, 0]) or (diag1 == [0, 1, 1]) or (diag1 == [1, 0, 1]):
+            eval += 3
+        elif (diag1 == [2, 0, 0]) or (diag1 == [0, 2, 0]) or (diag1 == [0, 0, 2]):
+            eval -= 2
+        elif (diag1 == [2, 2, 0]) or (diag1 == [0, 2, 2]) or (diag1 == [2, 0, 2]):
+            eval -= 6
+        else:
+            eval += 0
+
+        if (diag2 == [1, 0, 0]) or (diag2 == [0, 1, 0]) or (diag2 == [0, 0, 1]):
+            eval += 1
+        elif (diag2 == [1, 1, 0]) or (diag2 == [0, 1, 1]) or (diag2 == [1, 0, 1]):
+            eval += 3
+        elif (diag2 == [2, 0, 0]) or (diag2 == [0, 2, 0]) or (diag2 == [0, 0, 2]):
+            eval -= 2
+        elif (diag2 == [2, 2, 0]) or (diag2 == [0, 2, 2]) or (diag2 == [2, 0, 2]):
+            eval -= 6
+        else:
+            eval += 0
+
+        return eval
 
     def f2(self, C):
        """
        Rend la valeur de l’evaluation de la
        configuration C pour le joueur 2
        """
-       -self.f1(C)
+       return -self.f1(C)
        
     def joueLeCoup(self, C, coup):
         """
@@ -74,6 +134,7 @@ class Morpion(JeuSequentiel):
         
         C["History"].append(coup)
         return C
+    
     def estFini(self, C):
         """
         Rend True si la configuration C est

@@ -6,6 +6,7 @@ class StrategieHumaine(Strategie):
     """
     def __init__(self,jeu:JeuSequentiel):
         super().__init__(jeu)
+        
     def choisirProchainCoup(self,C):
         """
         Choisit un couple suivant une entree humaine 
