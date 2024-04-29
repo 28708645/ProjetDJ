@@ -8,7 +8,7 @@ class JeuSequentiel:
         self.Config={}
         self.Config["Plateau"]=[]
         self.Config["NbCoup"]=0
-        self.Config["Courant"]=2
+        self.Config["Courant"]=1
         self.Config["History"]=[]
         self.egalite=False
         return

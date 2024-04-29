@@ -59,10 +59,11 @@ def nparties (nomJeu,nbparties,AfficheMin=False,AfficheMax=False):
 
 game="Morpion"   
 nbpart=20    
-strat1=StrategieMiniMax
-# Marche pour profondeur 1, ne marche plus pour > 1
 profondeur=2
-strat2=StrategieHumaine
+#strat1=StrategieMiniMax
+strat1=StrategieHumaine
+#strat2=StrategieHumaine
+strat2=StrategieMiniMax
 
 unepartie(game,True)
 #nparties(game, 100, True)

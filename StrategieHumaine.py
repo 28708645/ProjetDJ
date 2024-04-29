@@ -23,7 +23,7 @@ class StrategieHumaine(Strategie):
                 c=input("Joueur "+str(tour)+": <Ligne><espace><colonne>\n")
                 tab=c.split(" ")
                 coup=(int(tab[0]),int(tab[1]))
-                print("Teste ",coup)
+                #print("Teste ",coup)
                 if(coup in cValides):
                     valide=True
                     nextCoup=coup

@@ -51,7 +51,15 @@ class Morpion(JeuSequentiel):
         configuration C pour le joueur 1
         """
         plateau = C["Plateau"]
-        return self.eval_ligne(plateau) + self.eval_colonne(plateau) + self.eval_diagonale(plateau)
+        if self.estFini(C):
+            if(self.getGagnant(C)==1) :
+                return 100000
+            elif(self.getGagnant(C)==0) :
+                return 0
+            else:
+                return -100000
+        else:
+            return self.eval_ligne(plateau) + self.eval_colonne(plateau) + self.eval_diagonale(plateau)
 
     def eval_ligne(self, plateau):
         eval = 0
@@ -131,7 +139,7 @@ class Morpion(JeuSequentiel):
         plateau[i][j]=courant
         #Changement joueur suivant
         C["NbCoup"]= C["NbCoup"]+1
-        
+        C["Courant"]= self.changeJoueur(C)
         C["History"].append(coup)
         return C
     
@@ -147,13 +155,15 @@ class Morpion(JeuSequentiel):
         ended=( ligneBool or colonneBool or diagBool)
         #print("ENDED ===",ended)
         if(ended):
+            self.egalite=False
+            C["Courant"]= self.changeJoueur(C)
             return True
         else:
             if(C["NbCoup"]==9):
                 self.egalite=True
                 return True
             else:
-                C["Courant"]= self.changeJoueur(C)
+                self.egalite=False
                 return False
             
     def getGagnant(self,C):
@@ -163,6 +173,7 @@ class Morpion(JeuSequentiel):
         diagBool , winner = self.diagonaleComplete(plateau)
         ended=(ligneBool or colonneBool or diagBool)
         if(ended):
+            self.egalite=False
             return winner
         else:
             if(C["NbCoup"]==9):
