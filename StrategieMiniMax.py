@@ -39,8 +39,8 @@ class StrategieMiniMax(Strategie):
                 #print("bestcoup= ",bestmove," evalue a ", ev)
             l, c = i
             tab[l, c] = testEv
-        print("tab eval")
-        print("+-----------+")
+        ##print("tab eval")
+        """print("+-----------+")
         toPrint=""
         for ligne in tab:
             toPrint+="|"
@@ -50,6 +50,7 @@ class StrategieMiniMax(Strategie):
             toPrint=""                
         print("+-----------+")
         print("bestmove :", bestmove)
+        """
         return bestmove 
     
     def estimation(self,C,coup,joueur,profondeur) :
@@ -77,11 +78,11 @@ class StrategieMiniMax(Strategie):
         listesConfig = []
         #Test victoire
         if (self.jeu.estFini(copieApCoup)) :
-            return self.evaluation(copieApCoup, tour, joueur), copieApCoup
+            return self.evaluation(copieApCoup, tour), copieApCoup
         ###
         else :
             if (profondeur==0) :
-                return self.evaluation(copieApCoup, tour, joueur), copieApCoup
+                return self.evaluation(copieApCoup, tour), copieApCoup
             if (tour==aqui):    #On est dans un MAX
                 #print("p =", profondeur, "on est dans un max, tour =", tour)
                 for cou in lcv:
@@ -107,9 +108,9 @@ class StrategieMiniMax(Strategie):
                 #print("p =", profondeur, coup, "evalue a", min(listeseval), " avec", lcv[arg])
                 return min(listeseval), listesConfig[np.argmin(listeseval)]
     
-    def evaluation(self,C,tour,joueur):
-        print("tour", tour, "joueur", joueur)
-        if(tour==joueur):
-            return self.jeu.f1(C,joueur)
+    def evaluation(self,C,tour):
+        #print("tour", tour, "joueur", )
+        if(tour==1):
+            return self.jeu.f1(C)
         else:
-            return self.jeu.f2(C,joueur)
+            return self.jeu.f2(C)

@@ -52,19 +52,40 @@ def nparties (nomJeu,nbparties,AfficheMin=False,AfficheMax=False):
     j1=[0,0,0]
     for i in range(0,nbparties):
         win=unepartie(nomJeu,AfficheMax)
+        print("partie ",i+1," finie")
         j1[win]+=1
     if(AfficheMin):
         print("J1 a fait "+str(j1[1])+"/"+str(nbparties)+" Victoire(s), "+str(j1[2])+"/"+str(nbparties)+" Defaite(s), "+str(j1[0])+"/"+str(nbparties)+" Nul(s)")
+    return win,j1
+
+def moySurnparties (nomJeu,nbparties,nbrepet,AfficheMin=False,AfficheMax=False):
+    winlist=[]
+
+    for i in range (nbrepet):
+        winner,scores=nparties(nomJeu,nbparties,AfficheMin,AfficheMax)
+        winlist.append(scores[1])
+        print("|BATCH ",i," fini|")
+    
+    sum=0
+    acc=0
+    for w in winlist :
+        sum+=w
+        acc+=nbparties
+
+    
+    print("Pourcentage de victoires ",(sum/acc)*100,"%")
     return
 
 game="Morpion"   
 nbpart=20    
-profondeur=2
-#strat1=StrategieMiniMax
-strat1=StrategieHumaine
+repetition=4
+profondeur=4
+strat1=StrategieMiniMax
+#strat1=StrategieHumaine
+#strat1=StrategieAleatoire
 #strat2=StrategieHumaine
-strat2=StrategieMiniMax
-
-unepartie(game,True)
-#nparties(game, 100, True)
-        
+#strat2=StrategieMiniMax
+strat2=StrategieAleatoire
+#unepartie(game,True)
+#nparties(game, nbparties=nbpart, AfficheMin=True)
+moySurnparties (game, nbparties=nbpart,nbrepet=repetition, AfficheMin=True)   
