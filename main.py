@@ -1,11 +1,16 @@
 from Morpion import Morpion
+from Allumettes import Allumettes
 from StrategieAleatoire import StrategieAleatoire
 from StrategieHumaine import StrategieHumaine
 from StrategieMiniMax import StrategieMiniMax
 
 def unepartie(nomJeu, Affichage=False):
+    print("NOM JEU ",nomJeu)
     if(nomJeu=="Morpion"):
         Jeu = Morpion()
+    
+    if(nomJeu=="Allumettes"):
+        Jeu = Allumettes(g,m)
     else:
         Jeu = Morpion()
     
@@ -49,6 +54,8 @@ def unepartie(nomJeu, Affichage=False):
 def unepartie(nomJeu,strategie1=StrategieAleatoire,strategie2=StrategieAleatoire, Affichage=False):
     if(nomJeu=="Morpion"):
         Jeu = Morpion()
+    if(nomJeu=="Allumettes"):
+        Jeu = Allumettes(g,m)
     else:
         Jeu = Morpion()
     
@@ -139,10 +146,13 @@ def moySurnparties (nomJeu,nbparties,nbrepet,AfficheMin=False,AfficheMax=False):
     print("Pourcentage de victoires ",(sum/acc)*100,"%")
     return
 
-game="Morpion"   
+#game="Morpion"  
+game="Allumettes" 
 nbpart=20    
 repetition=4
 profondeur=5
+g=5
+m=5
 strat1=StrategieMiniMax
 #strat1=StrategieHumaine
 #strat1=StrategieAleatoire
@@ -150,6 +160,7 @@ strat1=StrategieMiniMax
 strat2=StrategieMiniMax
 #strat2=StrategieAleatoire
 #unepartie(game,strategie1=StrategieHumaine,strategie2=StrategieMiniMax,Affichage=True)
-nparties(game, nbparties=nbpart,strategie1=StrategieMiniMax,strategie2=StrategieMiniMax, AfficheMin=True)
+#nparties(game, nbparties=nbpart,strategie1=StrategieMiniMax,strategie2=StrategieMiniMax, AfficheMin=True)
 #moySurnparties (game, nbparties=nbpart,nbrepet=repetition, AfficheMin=True)
-#unepartie(game,strategie1=StrategieMiniMax,strategie2=StrategieMiniMax,Affichage=True)   
+#unepartie(game,strategie1=StrategieMiniMax,strategie2=StrategieMiniMax,Affichage=True)
+unepartie(game,strategie1=StrategieAleatoire,Affichage=True)   

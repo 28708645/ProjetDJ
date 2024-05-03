@@ -23,9 +23,9 @@ class Allumettes(JeuSequentiel):
         for i in range(0,len(C["Plateau"])):
             ligne= C["Plateau"][i]
             if(ligne >0):
-                for j in range (ligne):
+                for j in range (1,ligne+1):
                     #Coup = <retirer dans groupe i j allumettes>
-                    coup= (ligne,j)
+                    coup= (i,j)
                     rep.append(coup)
         return rep
 
@@ -33,9 +33,7 @@ class Allumettes(JeuSequentiel):
     def afficheJeu(self):
         plateau= self.Config["Plateau"]   
         print("+-----------+")
-        toPrint=""
-        for groupe in plateau:
-            toPrint+= ""   
+        print(plateau)
         print("+-----------+")
         return
 
@@ -44,14 +42,14 @@ class Allumettes(JeuSequentiel):
        Rend la valeur de l’evaluation de la
        configuration C pour le joueur 1
        """
-       self.joueur1.eval(C)
+       return
 
     def f2(self, C):
        """
        Rend la valeur de l’evaluation de la
        configuration C pour le joueur 2
        """
-       -self.f1(C)
+       return -self.f1(C)
        
     def joueLeCoup(self, C, coup):
         """
@@ -59,12 +57,14 @@ class Allumettes(JeuSequentiel):
         que le joueur courant ait joue le coup
         dans la configuration C
         """
+        print(coup)
         plateau=C["Plateau"]
         courant=self.joueurCourant(C)
         i,j=coup
         plateau[i]=plateau[i]-j
         #Changement joueur suivant
         C["NbCoup"]= C["NbCoup"]+1
+        C["Courant"]= self.changeJoueur(C)
         C["History"].append(coup)
         return C
     def estFini(self, C):
@@ -79,11 +79,7 @@ class Allumettes(JeuSequentiel):
                 ended=False
         #print("ENDED ===",ended)
         if(ended):
+            C["Courant"]= self.changeJoueur(C)
             return True
         else:
-            if(C["NbCoup"]==9):
-                self.egalite=True
-                return True
-            else:
-                C["Courant"]= self.changeJoueur(C)
-                return False
+            return False
