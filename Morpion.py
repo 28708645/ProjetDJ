@@ -44,6 +44,25 @@ class Morpion(JeuSequentiel):
             toPrint=""                
         print("+-----------+")
         return
+    
+    def afficheConfig(self,C):
+        plateau= C['Plateau']
+        print("+-----------+")
+        toPrint=""
+        for ligne in plateau:
+            toPrint+="|"
+            for case in ligne:
+                if(case==1):
+                    toPrint+=" X |"
+                elif(case==2):
+                    toPrint+=" O |"
+                else:
+                    toPrint+="   |"
+            
+            print(toPrint)
+            toPrint=""                
+        print("+-----------+")
+        return
 
     def f1(self, C):
         """
@@ -51,15 +70,25 @@ class Morpion(JeuSequentiel):
         configuration C pour le joueur 1
         """
         plateau = C["Plateau"]
+        #print ("IN F1 //////////////////////////////////////////////////////")
+        #print (" Histo =",)
+        lastpla=C['History'][-1]
+        opportunite=self.opportunite(plateau,lastpla[0],lastpla[1],1)
+        #print (" Opportunite ",)
         if self.estFini(C):
-            if(self.getGagnant(C)==1) :
+            winner=self.getGagnant(C)
+            #cprint ("WINNER IS = ",winner)
+            if(winner==1) :
                 return 100000
-            elif(self.getGagnant(C)==0) :
-                return 0
+            elif(winner==0) :
+                return -100
             else:
                 return -100000
         else:
-            return self.eval_ligne(plateau) + self.eval_colonne(plateau) + self.eval_diagonale(plateau)
+            eval_ligne=self.eval_ligne(plateau)
+            eval_colonne=self.eval_colonne(plateau)
+            eval_diag=self.eval_diagonale(plateau)
+            return eval_ligne+eval_colonne+eval_diag#+opportunite
 
     def eval_ligne(self, plateau):
         eval = 0
@@ -167,18 +196,32 @@ class Morpion(JeuSequentiel):
                 return False
             
     def getGagnant(self,C):
-        plateau=C["Plateau"]
-        ligneBool , winner = self.ligneComplete(plateau)
-        colonneBool , winner = self.colonneComplete(plateau)
-        diagBool , winner = self.diagonaleComplete(plateau)
-        ended=(ligneBool or colonneBool or diagBool)
-        if(ended):
-            self.egalite=False
-            return winner
-        else:
+        if(self.estFini(C)):
+            plateau=C["Plateau"]
+            #print("############################IN GET GAGNANT ############################")
+            #self.afficheConfig(C)
+            ligneBool , winner = self.ligneComplete(plateau)
+            #print ("EN LIGNE =",ligneBool," Winner = ",winner)
+            if(ligneBool):
+                self.egalite=False
+                return winner
+            colonneBool , winner = self.colonneComplete(plateau)
+            if(colonneBool):
+                self.egalite=False
+                return winner
+            #print ("EN COLONNES =",colonneBool," Winner = ",winner)
+            diagBool , winner = self.diagonaleComplete(plateau)
+            if(diagBool):
+                self.egalite=False
+                return winner
+            #print ("EN DIAGS =",diagBool," Winner = ",winner)
+            #ended=(ligneBool or colonneBool or diagBool)
+            #print(" ENDED ? ",ended)
             if(C["NbCoup"]==9):
                 self.egalite=True
                 return 0
+        else:
+            return 0
     
     def ligneComplete(self,plateau):
         for ligne in plateau:
@@ -194,7 +237,7 @@ class Morpion(JeuSequentiel):
             if ((all (colonne==[1,1,1]))):
                 return (True,1)
             if((all(colonne==[2,2,2]))):
-                return (True,1)
+                return (True,2)
         return (False,0)
     
     def diagonaleComplete(self,plateau):
@@ -203,10 +246,11 @@ class Morpion(JeuSequentiel):
         if((diag1==[1,1,1]) or (diag2==[1,1,1])):
                 return (True,1)
         if((diag1==[2,2,2])or (diag2==[2,2,2])):
-                return (True,1)
+                return (True,2)
         return (False,0)
     
-    def opportunite(plateau,i,j,tour):
+    def opportunite(self,plateau,i,j,tour):
+        #print(plateau)
         ligne= plateau[i]
         opEnligne=1
         if(tour==1):

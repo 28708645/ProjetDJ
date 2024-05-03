@@ -28,6 +28,8 @@ class JeuSequentiel:
     
     def afficheJeu(self):
         pass
+    def afficheConfig(self,C):
+        pass
     
     def f1(self, C):
        """

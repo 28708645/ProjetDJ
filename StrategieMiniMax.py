@@ -28,11 +28,12 @@ class StrategieMiniMax(Strategie):
         bestmove=None
         ev = float("-inf")
         tab = np.zeros((3, 3), dtype=int)
+        #print("------------- JE SUIS J",joueur," ----------------")
         #print("coup possible :", listecoup)
         for i in listecoup :
             #print("j'estime le coup", i)
-            testEv, _ = self.estimation(C, i, joueur, profondeur)
-            #print("coup= ",i," evalue a ", test)
+            testEv, _ = self.estimation(C, i, joueur,joueur, profondeur)
+            #print("coup= ",i," evalue a ", testEv)
             if(testEv>ev):
                 bestmove =i
                 ev =testEv
@@ -51,9 +52,10 @@ class StrategieMiniMax(Strategie):
         print("+-----------+")
         print("bestmove :", bestmove)
         """
+        #print("bestcoup= ",bestmove," evalue a ", ev)
         return bestmove 
     
-    def estimation(self,C,coup,joueur,profondeur) :
+    def estimation(self,C,coup,tour,joueur,profondeur) :
         """
         etatjeu*Coup*reel->reel
         """
@@ -68,48 +70,68 @@ class StrategieMiniMax(Strategie):
         tour = self.jeu.joueurCourant(copie)
         copieApCoup=self.jeu.joueLeCoup(copie,coup)
         #print("profondeur", profondeur)
+        #self.jeu.afficheConfig(copieApCoup)
         #self.jeu.Config = copieApCoup
         #self.jeu.afficheJeu()
         #Ne sors pas
         lcv=self.jeu.coupsPossibles(copieApCoup)
         aqui= self.jeu.joueurCourant(copieApCoup)
-        #print(tour, aqui)
+        #print("joueur =",joueur," tour =",tour, "aqui =",aqui)
         listeseval=[] 
         listesConfig = []
         #Test victoire
         if (self.jeu.estFini(copieApCoup)) :
-            return self.evaluation(copieApCoup, tour), copieApCoup
+            #print("Coup evalue ",coup)
+            eval=self.evaluation(copieApCoup, joueur)
+            #if(joueur==1):
+            #    print("other eval = ",self.evaluation(copieApCoup,2))
+            #if(joueur==2):
+            #    print("other eval = ",self.evaluation(copieApCoup,1))
+            #print("eval a ",eval)
+            return eval, copieApCoup
         ###
         else :
             if (profondeur==0) :
-                return self.evaluation(copieApCoup, tour), copieApCoup
-            if (tour==aqui):    #On est dans un MAX
+                #print("Coup evalue ",coup)
+                #self.jeu.afficheConfig(copieApCoup)
+                #if(joueur==1):
+                #    print("other eval = ",self.evaluation(copieApCoup,2))
+                #if(joueur==2):
+                #    print("other eval = ",self.evaluation(copieApCoup,1))
+                eval=self.evaluation(copieApCoup, joueur)
+                #print("eval a ",eval)
+                return eval, copieApCoup
+            if (aqui==joueur):    #On est dans un MAX
                 #print("p =", profondeur, "on est dans un max, tour =", tour)
                 for cou in lcv:
-                    res, tmp = self.estimation(copieApCoup,cou,joueur,profondeur-1)
+                    res, tmp = self.estimation(copieApCoup,cou,tour,joueur,profondeur-1)
                     listeseval.append(res)
                     listesConfig.append(tmp)
                     #print(coup, "->", cou, ":", res)
                     #listeseval.append(tmp)
                     #listeseval.append(self.estimation(copieApCoup,cou,tour,profondeur-1))
-                #arg = np.argmax(listeseval)
+                arg = np.argmax(listeseval)
                 #print("p =", profondeur, coup, "evalue a", max(listeseval), " avec", lcv[arg])
+                #print("HERE 6-----------  joueur= ",joueur," tour=",tour)
+                #print("p =", profondeur, "Liste eval =",listeseval, " de MAX =",max(listeseval))
                 return max(listeseval), listesConfig[np.argmax(listeseval)]
             else :      #On est dans un MIN
                 #print("p =", profondeur, "on est dans un min, tour =", tour)
                 for cou in lcv:
-                    res, tmp = self.estimation(copieApCoup,cou,joueur,profondeur-1)
+                    res, tmp = self.estimation(copieApCoup,cou,tour,joueur,profondeur-1)
                     listeseval.append(res)
                     listesConfig.append(tmp)
                     #print(coup, "->", cou, ":", res)
                     #listeseval.append(tmp)
                     #listeseval.append(self.estimation(copieApCoup,cou,tour,profondeur-1))
-                #arg = np.argmin(listeseval)
+                arg = np.argmin(listeseval)
                 #print("p =", profondeur, coup, "evalue a", min(listeseval), " avec", lcv[arg])
+                #print("HERE 6-----------  joueur= ",joueur," tour=",tour)
+                #print("p =", profondeur, "Liste eval =",listeseval, " de MIN =",min(listeseval))
                 return min(listeseval), listesConfig[np.argmin(listeseval)]
     
     def evaluation(self,C,tour):
-        #print("tour", tour, "joueur", )
+        #print("tour", tour)
         if(tour==1):
             return self.jeu.f1(C)
         else:

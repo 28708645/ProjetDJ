@@ -34,18 +34,8 @@ class Allumettes(JeuSequentiel):
         plateau= self.Config["Plateau"]   
         print("+-----------+")
         toPrint=""
-        for ligne in plateau:
-            toPrint+="|"
-            for case in ligne:
-                if(case==1):
-                    toPrint+=" X |"
-                elif(case==2):
-                    toPrint+=" O |"
-                else:
-                    toPrint+="   |"
-            
-            print(toPrint)
-            toPrint=""                
+        for groupe in plateau:
+            toPrint+= ""   
         print("+-----------+")
         return
 
