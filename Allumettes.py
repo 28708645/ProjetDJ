@@ -7,6 +7,8 @@ class Allumettes(JeuSequentiel):
     """
     def __init__(self,g:int,m:int):
        super().__init__()
+       self.g = g
+       self.m = m
        for i in range (g):
            self.Config["Plateau"].append(m)
         
