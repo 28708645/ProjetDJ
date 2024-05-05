@@ -5,11 +5,11 @@ class Grundy():
     """
     """
     def __init__(self, g, m):
-        self.vals = np.zeros([m]*g, dtype=int)
+        self.vals = np.ones([m+1]*g, dtype=int)
         init = [0]*g
         coupPossible = []
         for i in range(g):
-            for j in range(1, 4):
+            for j in range(1, m+2):
                 coupPossible.append((i, j))
 
         ouvert = [init]
@@ -20,7 +20,7 @@ class Grundy():
             if etat not in ferme:
                 ferme.append(etat)
                 for i, j in coupPossible:
-                    if etat[i]+j <= m-1:
+                    if etat[i]+j <= m:
                         newEtat = etat[:]
                         newEtat[i] += j
                         if newEtat not in ferme:
@@ -42,7 +42,7 @@ class Grundy():
             parent = []
             for i, j in coupPossible:
                 newEtat = etat[:]
-                if etat[i]+j <= m-1:
+                if etat[i]+j <= m:
                     newEtat = etat[:]
                     newEtat[i] += j
                     parent.append(tuple(newEtat))

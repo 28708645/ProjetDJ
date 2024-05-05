@@ -81,7 +81,6 @@ class Allumettes(JeuSequentiel):
                 ended=False
         #print("ENDED ===",ended)
         if(ended):
-            C["Courant"]= self.changeJoueur(C)
             return True
         else:
             return False

@@ -3,6 +3,7 @@ from Allumettes import Allumettes
 from StrategieAleatoire import StrategieAleatoire
 from StrategieHumaine import StrategieHumaine
 from StrategieMiniMax import StrategieMiniMax
+from StrategieAllumettes import StrategieAllumettes
 
 def unepartie(nomJeu, Affichage=False):
     print("NOM JEU ",nomJeu)
@@ -151,16 +152,18 @@ game="Allumettes"
 nbpart=20    
 repetition=4
 profondeur=5
-g=5
-m=5
-strat1=StrategieMiniMax
+g=4
+m=7
+#strat1=StrategieMiniMax
 #strat1=StrategieHumaine
-#strat1=StrategieAleatoire
+strat1=StrategieAleatoire
+#strat1=StrategieAllumettes
 #strat2=StrategieHumaine
-strat2=StrategieMiniMax
+#strat2=StrategieMiniMax
 #strat2=StrategieAleatoire
+strat2=StrategieAllumettes
 #unepartie(game,strategie1=StrategieHumaine,strategie2=StrategieMiniMax,Affichage=True)
 #nparties(game, nbparties=nbpart,strategie1=StrategieMiniMax,strategie2=StrategieMiniMax, AfficheMin=True)
 #moySurnparties (game, nbparties=nbpart,nbrepet=repetition, AfficheMin=True)
 #unepartie(game,strategie1=StrategieMiniMax,strategie2=StrategieMiniMax,Affichage=True)
-unepartie(game,strategie1=StrategieAleatoire,Affichage=True)   
+unepartie(game,strat1,strat2,Affichage=True)   
