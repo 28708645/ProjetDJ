@@ -59,7 +59,7 @@ class Allumettes(JeuSequentiel):
         que le joueur courant ait joue le coup
         dans la configuration C
         """
-        print(coup)
+        #print(coup)
         plateau=C["Plateau"]
         courant=self.joueurCourant(C)
         i,j=coup
