@@ -10,19 +10,19 @@ class StrategieAllumettes(Strategie):
     def __init__(self, jeu:Allumettes):
         super().__init__(jeu)
         self.grundy = Grundy(jeu.g, jeu.m).vals
-        #print(self.grundy)
+        #print(self.grundy[tuple([jeu.m]*jeu.g)])
     
     def choisirProchainCoup(self, C):
         cValides=self.jeu.coupsPossibles(C)
         etatsPossible = []
         etatCurrent = C['Plateau'][:]
-        print("etat current :", etatCurrent)
-        print("coup possible :", cValides)
+        #print("etat current :", etatCurrent)
+        #print("coup possible :", cValides)
         for i, j in cValides:
             newEtatPossible = etatCurrent[:]
             newEtatPossible[i] -= j
             etatsPossible.append(((i, j), tuple(newEtatPossible)))
-        print("etat possible :", etatsPossible)
+        #print("etat possible :", etatsPossible)
 
         for coupPossible, etatPossible in etatsPossible:
             if self.grundy[etatPossible] == 0:

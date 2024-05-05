@@ -27,9 +27,9 @@ class StrategieMiniMax(Strategie):
     def decision(self,C,listecoup,profondeur,joueur):
         bestmove=None
         ev = float("-inf")
-        tab = np.zeros((3, 3), dtype=int)
         #print("------------- JE SUIS J",joueur," ----------------")
         #print("coup possible :", listecoup)
+        bestmove_Tab=[]
         for i in listecoup :
             #print("j'estime le coup", i)
             testEv, _ = self.estimation(C, i, joueur,joueur, profondeur)
@@ -38,8 +38,9 @@ class StrategieMiniMax(Strategie):
                 bestmove =i
                 ev =testEv
                 #print("bestcoup= ",bestmove," evalue a ", ev)
-            l, c = i
-            tab[l, c] = testEv
+                bestmove_Tab=[i]
+            elif(testEv==ev):
+                bestmove_Tab.append(i)
         ##print("tab eval")
         """print("+-----------+")
         toPrint=""
@@ -53,6 +54,7 @@ class StrategieMiniMax(Strategie):
         print("bestmove :", bestmove)
         """
         #print("bestcoup= ",bestmove," evalue a ", ev)
+        #return random.choice(bestmove_Tab)
         return bestmove 
     
     def estimation(self,C,coup,tour,joueur,profondeur) :

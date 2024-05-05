@@ -1,6 +1,7 @@
 from JeuSequentiel import JeuSequentiel
 import numpy as np
 import random
+from functools import reduce
 class Allumettes(JeuSequentiel):
     """
     Represente le jeu du morpion(3x3)
@@ -40,11 +41,19 @@ class Allumettes(JeuSequentiel):
         return
 
     def f1(self, C):
-       """
-       Rend la valeur de l’evaluation de la
-       configuration C pour le joueur 1
-       """
-       return
+        """
+        Rend la valeur de l’evaluation de la
+        configuration C pour le joueur 1
+        """
+        plateau=C['Plateau']
+        list_Bin_Groupes=[]
+        for groupe in plateau:
+            list_Bin_Groupes.append(bin(groupe)[2:])
+        res=reduce(lambda x ,y : int(x) ^int(y),list_Bin_Groupes)
+        if(res==0):
+            return +10
+        else:
+            return 0
 
     def f2(self, C):
        """
