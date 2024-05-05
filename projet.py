@@ -405,6 +405,9 @@ class Allumettes(JeuSequentiel):
         """
         Rend la valeur de l’evaluation de la
         configuration C pour le joueur 1
+
+        Utilise le théorème de Sprague_Grundy, extrait d'un site
+        source : https://interstices.info/strategies-magiques-au-pays-de-nim/
         """
         plateau=C['Plateau']
         list_Bin_Groupes=[]
